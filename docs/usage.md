@@ -26,15 +26,15 @@ bash scripts/quick_inventory.sh YOUR_LOGIN
 
 include/exclude 使用仓库短名或 OWNER/NAME 的 glob，exclude 优先。在线、离线和 Profile 全部遵守；命令行同名参数覆盖配置值。私有范围必须明确开启 --include-private，且 owner 是当前认证用户。
 
-完全离线演示：
+重新分析 scan 命令保存的快照：
 
 ~~~bash
 python3 scripts/github_gardener.py analyze \
-  --snapshot tests/fixtures/snapshot-v2.json \
-  --config tests/fixtures/context.json --format both --output ./demo
+  --snapshot ./report/snapshot.json \
+  --config config.example.json --format both --output ./report
 ~~~
 
-tests/fixtures/snapshot.json 保留 v1 兼容样本；旧快照缺少分页与新安全检查证据，置信度会降低。
+旧快照缺少分页与新安全检查证据时，置信度会降低。
 
 ## 三种判断各回答一个问题
 

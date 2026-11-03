@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a self-contained .skill ZIP with tests and evals; no network or Token."""
+"""Build a self-contained .skill ZIP without network access or credentials."""
 import argparse
 from pathlib import Path
 import zipfile

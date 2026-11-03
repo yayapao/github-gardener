@@ -2,7 +2,7 @@
 from pathlib import Path
 
 ROOT_FILES = ("SKILL.md", "README.md", "CONTRIBUTING.md", "config.example.json", "LICENSE")
-RESOURCE_DIRS = ("agents", "references", "scripts", "tests", "evals", "docs")
+RESOURCE_DIRS = ("agents", "references", "scripts", "docs")
 
 
 def skill_files(source):

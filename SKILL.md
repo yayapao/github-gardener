@@ -19,7 +19,7 @@ description: 审计和经营个人 GitHub 仓库组合：扫描风险与开发�
 
 先定位本 Skill 的实际安装目录，下面命令中的 scripts 路径均相对于该目录；不要假定用户当前目录就是 Skill 目录。
 
-1. 检查 gh、jq、python3 和 gh auth status。不得输出 Token；测试使用模拟数据。
+1. 检查 gh、jq、python3 和 gh auth status。不得输出 Token。
 2. 用户没有指定 owner 时使用当前登录用户。已有 include/exclude 不擅自重置。私有扫描需用户明确要求，且 owner 与当前账号匹配。
 3. 运行 collect/scan。每页最多 100 条，默认最多 5 页、100 个仓库；报告说明上限导致的缺口。命中限流后停止后续联网请求。
 
@@ -31,12 +31,12 @@ python3 scripts/github_gardener.py scan --owner USER \
 
 只需基础清单时可用 bash scripts/quick_inventory.sh USER；它不替代完整扫描。
 
-离线演示：
+重新分析已采集的快照：
 
 ~~~bash
 python3 scripts/github_gardener.py analyze \
-  --snapshot tests/fixtures/snapshot-v2.json \
-  --config tests/fixtures/context.json --format both --output ./report
+  --snapshot ./report/snapshot.json \
+  --config config.example.json --format both --output ./report
 ~~~
 
 生成报告后，阅读 [审计方法](references/audit-method.md)，重点处理：

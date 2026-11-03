@@ -51,29 +51,27 @@ $github-gardener 优化 my-tool 的 README、描述和 Topics，依据真实代�
 
 还可以要求“文案减少 50%”“给待回复 Issue 写草稿”或“生成 30 天维护计划”。自动扫描提供事实，Agent 负责理解和编辑；后台不会自行修改仓库。
 
-## 无需 Token 的离线体验
+## 命令行入口
 
 ```bash
-python3 -B scripts/github_gardener.py analyze \
-  --snapshot tests/fixtures/snapshot-v2.json \
-  --config tests/fixtures/context.json --format both --output ./demo
+python3 -B scripts/github_gardener.py scan --owner YOUR_LOGIN \
+  --format both --output ./report --snapshot-out ./report/snapshot.json
 ```
 
-生成 Markdown、JSON 和 Profile 事实草案。示例数据与退役记录都是虚构的，不代表真实账号。完整参数、私有扫描与配置见 [使用指南](docs/usage.md)。
+生成 Markdown、JSON 和 Profile 事实草案。完整参数、私有扫描与配置见 [使用指南](docs/usage.md)。
 
-## 设计与验证
+## 设计与开发
 
 - [设计与能力边界](docs/design.md)：Agent 与脚本分工、证据模型、安装与维护方式。
 - [Profile 设计与编排](references/profile-design.md)：定位、项目选择、原创视觉、精简、预览和上线。
 - [审计方法](references/audit-method.md) · [内容经营](references/editorial-workflow.md) · [安全变更流程](references/safe-change-workflow.md) · [报告契约](references/report-schema.md)。
-- [参与开发](CONTRIBUTING.md)：离线测试与 Agent 场景验收。
+- [参与开发](CONTRIBUTING.md)：维护方式与打包入口。
 
 ```bash
-python3 -B -m unittest discover -s tests -v
 python3 -B scripts/package_skill.py --output ../github-gardener.skill
 ```
 
-`.skill` 是可解压的 ZIP 包，包含可安装 Skill、设计指南、模拟数据与测试。安装和打包使用相同的文件清单，排除 Git 元数据、CI 配置与本地工作报告。CI 运行离线单元测试、分析和打包；`evals/evals.json` 的 Agent 行为题需单独执行，不能把单元测试通过等同于设计或授权行为验收。
+`.skill` 是可解压的 ZIP 包，包含可安装 Skill 和设计指南。安装和打包使用相同的文件清单，排除 Git 元数据与本地工作报告。
 
 源码入口为 [SKILL.md](SKILL.md)，本仓库是唯一维护源，本地安装目录是运行副本。
 
