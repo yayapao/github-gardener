@@ -1,86 +1,47 @@
 # Github Gardener
 
-让 Agent 帮你经营 GitHub 项目：有证据地盘点风险与维护价值，改进 README，设计个人主页，再按授权提交变更。
+你的 GitHub 项目花园管家，一个交给 Agent 使用的 Skill。
 
-**默认只读 · 通过 gh 使用本机登录态 · Python 标准库 · MIT**
-
-## 工作流程
-
-![Github Gardener 工作流程：提出目标、只读查证、Agent 编排、审阅授权、提交与核验](docs/assets/gardener-workflow.png)
-
-[编辑流程图源文件](docs/assets/gardener-workflow.excalidraw)（使用 [Excalidraw](https://excalidraw.com/) 打开）。
+告诉 Agent 你想整理什么：它会扫描仓库、分析风险与开发价值、改进项目介绍、设计个人主页，并准备可审阅的修改。安装、配置和具体操作都由 Agent 处理。
 
 ## 能做什么
 
-- **盘点项目**：公开、非 Fork、未归档仓库起步，支持排除列表、自定义范围和明确授权的私有扫描。
-- **给出判断**：维护状态、健康风险、发展价值分别说明，提供证据、置信度、快速改进和 30 天计划。
-- **处理积压**：找未回复 Issue、待审 PR 和失败 CI，准备具体行动与回复草稿。
-- **经营内容**：完善描述、Topics 和 README；为 Profile 选择项目、编排文案、制作静态横幅与预览，支持按比例精简。
-- **审核后修改**：先完整 diff，再按授权建分支、提交和 PR；危险动作分别确认。
+- **整理项目**：找出值得继续开发、需要维护或适合归档的项目，给出证据与建议。
+- **发现问题**：检查安全告警、失败 CI、长期未回复的 Issue、待审 PR 和文档缺口。
+- **推广项目**：优化 README、描述与 Topics，让别人更容易理解和使用你的项目。
+- **设计主页**：精选展示项目，编排简洁文案与视觉，让 GitHub Profile 更有辨识度。
+- **安排维护**：整理快速改进、回复草稿和 30 天行动计划。
 
-低 Star 或长期没提交不等于应该删除。未知数据不算无风险，健康分也不代表全面安全审计。
+默认只读。修改前展示差异与预览；删除、归档、评论、合并、发布等操作分别确认。支持自定义范围和明确要求的私有仓库扫描。
 
-## 安装到 Codex
+## 让 Agent 安装
 
-准备 [GitHub CLI](https://cli.github.com/)、jq 和 Python 3.9+，再克隆安装：
-
-```bash
-git clone https://github.com/yayapao/github-gardener.git
-cd github-gardener
-bash scripts/install.sh
-```
-
-默认安装到 `${CODEX_HOME:-~/.codex}/skills/github-gardener`。已安装时运行 `bash scripts/install.sh --force`，旧版本会备份到 Codex 的 `skill-backups/`，不进入 Skill 发现目录。也可用 `--destination /absolute/path/skills/github-gardener` 指定目标。
-
-开启新的 Codex 会话，即可使用 `$github-gardener` 或自然语言调用。联网扫描前执行 `gh auth login`；不把 Token 写进配置或聊天。扫描只需相应读取权限，不要为普通扫描申请删除权限。
-
-更新源码与本机安装副本：
-
-```bash
-git pull --ff-only
-bash scripts/install.sh --force
-```
-
-## 在 Agent 里直接说
+把下面这句话发给 Codex 或支持 Agent Skills 的 Agent：
 
 ```text
-$github-gardener 扫描我的项目，找安全风险、值得继续开发的项目和快速改进，先只读。
+请从 https://github.com/yayapao/github-gardener 为我安装 Github Gardener Skill，并完成依赖准备和安装核验。
+```
+
+## 安装后，直接说
+
+```text
+扫描我的 GitHub 项目，找出安全风险、值得继续开发的项目和清理候选，先给建议。
 ```
 
 ```text
-$github-gardener 以 Agent 开发为重点设计我的 Profile，保持简洁，先给预览和 diff。
+优化 my-tool 的 README 和描述，让社区用户更容易理解它的用途。
 ```
 
 ```text
-$github-gardener 优化 my-tool 的 README、描述和 Topics，依据真实代码写，修改前展示差异。
+帮我重新设计 GitHub 主页，重点展示 Agent 开发，保持简洁，先给预览。
 ```
 
-还可以要求“文案减少 50%”“给待回复 Issue 写草稿”或“生成 30 天维护计划”。自动扫描提供事实，Agent 负责理解和编辑；后台不会自行修改仓库。
+也可以用 `$github-gardener` 指定调用，或直接说“文案减少 50%”“给这些 Issue 写回复草稿”。
 
-## 命令行入口
+## 工作流程
 
-```bash
-python3 -B scripts/github_gardener.py scan --owner YOUR_LOGIN \
-  --format both --output ./report --snapshot-out ./report/snapshot.json
-```
+![Github Gardener 工作流程：提出目标、Agent 查证与编排、审阅授权、提交与核验](docs/assets/gardener-workflow.png)
 
-生成 Markdown、JSON 和 Profile 事实草案。完整参数、私有扫描与配置见 [使用指南](docs/usage.md)。
-
-## 设计与开发
-
-- [设计与能力边界](docs/design.md)：Agent 与脚本分工、证据模型、安装与维护方式。
-- [Profile 设计与编排](references/profile-design.md)：定位、项目选择、原创视觉、精简、预览和上线。
-- [审计方法](references/audit-method.md) · [内容经营](references/editorial-workflow.md) · [安全变更流程](references/safe-change-workflow.md) · [报告契约](references/report-schema.md)。
-- [参与开发](CONTRIBUTING.md)：维护方式与打包入口。
-
-```bash
-python3 -B scripts/package_skill.py --output ../github-gardener.skill
-```
-
-`.skill` 是可解压的 ZIP 包，包含可安装 Skill 和设计指南。安装和打包使用相同的文件清单，排除 Git 元数据与本地工作报告。
-
-源码入口为 [SKILL.md](SKILL.md)，本仓库是唯一维护源，本地安装目录是运行副本。
-
-## 许可证
+[Agent 执行指引](docs/usage.md) · [Skill 入口](SKILL.md) · [设计说明](docs/design.md) · [参与开发](CONTRIBUTING.md)
 
 [MIT](LICENSE) © yayapao

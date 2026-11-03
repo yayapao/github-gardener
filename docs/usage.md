@@ -1,6 +1,25 @@
-# CLI 与配置
+# Agent 执行指引
 
-命令从仓库根目录运行；安装后从 Skill 目录运行，或使用脚本绝对路径。
+本页供 Agent 安装、配置和调用 Skill。用户入口是 [README](../README.md) 中的安装 Prompt 与自然语言需求；Agent 自行执行下列步骤，向用户交付结果与必要决策。
+
+## 安装与环境准备
+
+1. 确认当前宿主支持 Agent Skills，检查已有安装及 `gh`、`jq`、`python3`；Python 需 3.9+。依赖缺失时，在当前安装请求范围内使用可用的包管理或安装能力准备，遵守宿主的权限要求。
+2. 获取 `https://github.com/yayapao/github-gardener` 中的 Skill。优先使用宿主已有的 Skill 安装能力；Codex 也可获取源码后使用本仓库安装器：
+
+   ~~~bash
+   git clone --depth 1 https://github.com/yayapao/github-gardener.git
+   cd github-gardener
+   bash scripts/install.sh
+   ~~~
+
+   默认安装到 `${CODEX_HOME:-~/.codex}/skills/github-gardener`。可用 `--destination /absolute/path/skills/github-gardener` 指定宿主的实际 Skill 目录，不假定所有 Agent 都使用 Codex 路径。
+
+3. 已有同名 Skill 时先核对来源与版本。更新本仓库安装副本时，获取最新源码后执行 `bash scripts/install.sh --force`；旧版本备份到 Codex 根目录下的 `skill-backups/`。保留无关来源的同名内容，不盲目覆盖。
+4. 核验实际安装目录中的 `SKILL.md`、脚本、参考文件及其引用，确认依赖命令可用。宿主需要新会话才能发现 Skill 时告知用户；文件安装完成不等于当前会话已加载。
+5. 使用 `gh auth status` 检查本机授权，不输出凭证。首次联网任务需要登录时，引导用户通过 GitHub 授权页面完成 `gh auth login`；不要索取聊天中的 Token。普通扫描只需相应读取权限，不申请删除权限。
+
+安装请求只准备环境和 Skill，不自动发起仓库审计或远程变更。安装后按用户目标选择下面的调用方式；命令从 Skill 目录运行，或使用脚本绝对路径。扫描输出放在本次任务目录，避免把用户报告混入 Skill 源码。
 
 ## 扫描与离线分析
 
