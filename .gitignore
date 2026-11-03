@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*
+*.pem
+*.key
+/config.local.json
+/report/
+/reports/
+/demo/
+/outputs/
+/work/
+/dist/
+/*.skill

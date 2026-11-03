@@ -1,0 +1,46 @@
+{
+  "owner": null,
+  "include_private": false,
+  "include_forks": false,
+  "include_archived": false,
+  "include": [
+    "*"
+  ],
+  "exclude": [
+    "dotfiles",
+    "*-scratch",
+    "sandbox/*"
+  ],
+  "audit_profile_repo": true,
+  "issue_stale_days": 30,
+  "pr_stale_days": 14,
+  "docs_stale_days": 365,
+  "dormant_days": 180,
+  "archive_candidate_days": 365,
+  "max_repositories": 100,
+  "max_pages": 5,
+  "recent_runs": 30,
+  "repository_context": {
+    "YOUR_LOGIN/my-tool": {
+      "project_type": "code",
+      "maintenance_intent": "stable",
+      "audience": "请填写实际目标用户",
+      "user_interest": "high",
+      "showcase_priority": 10,
+      "next_milestone": "请填写两周内可验收的下一步",
+      "demand": [],
+      "differentiation": [],
+      "feasibility": []
+    },
+    "YOUR_LOGIN/old-project": {
+      "maintenance_intent": "retired",
+      "archive_reason": "请填写真实退役或替代原因",
+      "archive_evidence_source": "请填写真实来源，不要复制示例充当证据",
+      "archive_review": {
+        "external_usage_reviewed": false,
+        "release_assets_reviewed": false,
+        "migration_ready": false
+      }
+    }
+  }
+}

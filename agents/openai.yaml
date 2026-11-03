@@ -1,0 +1,6 @@
+interface:
+  display_name: "Github Gardener"
+  short_description: "审计 GitHub 项目风险与发展价值，设计 Profile 编排、视觉和 README"
+  default_prompt: "使用 $github-gardener 只读扫描我的公开仓库，列出风险、继续开发机会和 30 天计划。"
+policy:
+  allow_implicit_invocation: true
