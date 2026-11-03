@@ -4,6 +4,12 @@
 
 **默认只读 · 通过 gh 使用本机登录态 · Python 标准库 · MIT**
 
+## 工作流程
+
+![Github Gardener 工作流程：提出目标、只读查证、Agent 编排、审阅授权、提交与核验](docs/assets/gardener-workflow.png)
+
+[编辑流程图源文件](docs/assets/gardener-workflow.excalidraw)（使用 [Excalidraw](https://excalidraw.com/) 打开）。
+
 ## 能做什么
 
 - **盘点项目**：公开、非 Fork、未归档仓库起步，支持排除列表、自定义范围和明确授权的私有扫描。

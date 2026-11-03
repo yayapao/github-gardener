@@ -2,6 +2,14 @@
 
 Github Gardener 是 Agent 可调用的 Skill。脚本负责收集和计算可复核的事实，Agent 负责理解项目、取舍内容与形成建议；远程修改依赖当前会话中的明确授权。
 
+## 工作流程
+
+![Github Gardener 工作流程：只读采集事实，Agent 形成建议与草案，审阅授权后提交并核验](assets/gardener-workflow.png)
+
+主流程体现调用顺序，分支展示维护报告、内容草稿和 Profile 设计三类产出。未授权时交付本地结果；文档修改按授权创建分支和 PR，合并发布与仓库操作分别授权。
+
+[可编辑 Excalidraw 源文件](assets/gardener-workflow.excalidraw)，与 README 复用同一张导出图片。
+
 ## 分工
 
 | 层 | 入口 | 职责与产物 |
