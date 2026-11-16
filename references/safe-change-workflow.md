@@ -27,6 +27,8 @@ BRANCH 和路径参数由 Agent 编码；使用结构化参数或安全 shell �
 
 ## 确认后完整执行
 
+执行远程写入前先运行 `scripts/github_identity.py show --verify`；创建本地提交前运行 `scripts/github_identity.py apply --repo 目标仓库`。API 创建普通提交时也显式使用本地身份中的姓名与邮箱。提交后读取实际 author、committer，不能用 gh 登录成功替代提交身份核验。
+
 1. 重新读取默认分支 HEAD；与已审阅的 baseSha 不一致则重新计算有实质变化的 diff，不能悄悄换基准。
 2. prepare_change.py verify 检查本地当前文件、候选文件和 diff 的哈希。它检测内容变化，不证明用户授权。
 3. 创建新 garden/readme-DATE 分支，基于已审阅 SHA；如分支已存在，不覆盖，选择新名字并记录。

@@ -19,6 +19,7 @@ Github Gardener 是 Agent 可调用的 Skill。用户入口说明它是什么、
 | 分析 | `gardener_analysis.py` | 分别判断维护状态、健康风险和发展价值，不以提交时间直接决定归档 |
 | 报告 | `gardener_report.py` | Markdown、JSON、维护计划及 Profile 事实草案 |
 | 编辑 | Agent + `references/` | 阅读真实文件，写 README、回复草稿，设计和编排个人主页 |
+| 本地身份 | `github_identity.py` | 授权后保存身份，按账号核验，设置并检查目标仓库的提交身份 |
 | 变更准备 | `prepare_change.py` | 本地完整 diff 与 SHA-256 校验；已有仓库真实 SHA 或新 Profile 空基准 |
 | 安装与分发 | `skill_files.py`、`install_skill.py`、`package_skill.py` | 同一文件清单用于安装和 ZIP；升级保留可恢复备份 |
 
@@ -49,6 +50,8 @@ Github Gardener 是 Agent 可调用的 Skill。用户入口说明它是什么、
 本仓库是源码和设计的维护入口；`~/.codex/skills/github-gardener` 是安装副本。更新流程是修改仓库、核验、提交，再运行安装脚本。扫描报告、账号配置和快照输出保存在仓库外或被忽略的本地目录。
 
 安装与分发仅选择根 `SKILL.md`、README、贡献指南、示例配置、许可证，以及 `agents/`、`references/`、`scripts/`、`docs/`。Git 元数据、缓存和工作报告不进入安装目录或 `.skill` 包。需要新增资源目录时，同步维护共享清单。
+
+GitHub 账号与 Git 提交身份独立保存在用户配置目录的 `github-gardener/identity.json`，不随 Skill 分发。首次网页授权后初始化；后续使用前核对当前账号并复用，升级 Skill 不重新索取个人信息。具体规则和命令见 [身份初始化与复用](usage.md#身份初始化与复用)。
 
 ## 变更核验
 

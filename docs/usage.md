@@ -17,9 +17,35 @@
 
 3. 已有同名 Skill 时先核对来源与版本。更新本仓库安装副本时，获取最新源码后执行 `bash scripts/install.sh --force`；旧版本备份到 Codex 根目录下的 `skill-backups/`。保留无关来源的同名内容，不盲目覆盖。
 4. 核验实际安装目录中的 `SKILL.md`、脚本、参考文件及其引用，确认依赖命令可用。宿主需要新会话才能发现 Skill 时告知用户；文件安装完成不等于当前会话已加载。
-5. 使用 `gh auth status` 检查本机授权，不输出凭证。首次联网任务需要登录时，引导用户通过 GitHub 授权页面完成 `gh auth login`；不要索取聊天中的 Token。普通扫描只需相应读取权限，不申请删除权限。
+5. 使用 `gh auth status` 检查本机授权，不输出凭证。首次联网任务需要登录时，引导用户通过 GitHub 授权页面完成 `gh auth login --hostname github.com --web --scopes user:email`，以便读取账号的已验证主邮箱；不要索取聊天中的 Token，不申请删除权限。
+6. 网页授权成功后完成下面的身份初始化；已有本地身份则核验并复用，无需重复询问姓名与邮箱。
 
 安装请求只准备环境和 Skill，不自动发起仓库审计或远程变更。安装后按用户目标选择下面的调用方式；命令从 Skill 目录运行，或使用脚本绝对路径。扫描输出放在本次任务目录，避免把用户报告混入 Skill 源码。
+
+## 身份初始化与复用
+
+gh 的授权凭据与 Git 提交身份是两份状态。登录成功不会设置 `user.name`、`user.email`，也不能用系统全局 Git 身份推断本次 GitHub 身份。
+
+首次授权后运行：
+
+~~~bash
+python3 scripts/github_identity.py setup --expected-login YOUR_LOGIN
+~~~
+
+登录名和提交姓名来自 `GET /user`，邮箱仅使用 `GET /user/emails` 中唯一同时满足 `primary=true`、`verified=true` 的地址。脚本没有手动指定姓名或邮箱的参数；账号公开资料中的邮箱、全局 Git 配置、聊天中给出的邮箱都不能代替这项核验。
+
+旧授权缺少读取邮箱权限时，执行 `gh auth refresh --hostname github.com --scopes user:email`，由用户完成网页授权后重试。接口仍未返回已验证主邮箱时，请用户在 GitHub 账号设置中确认并验证邮箱；不回退为手填，不静默请求整个 `user` 权限。
+
+配置保存在 `${XDG_CONFIG_HOME:-~/.config}/github-gardener/identity.json`，保存账号 ID、登录名、提交姓名、邮箱及来源 `git_email_source=github_verified_primary`，文件权限为 0600。旧的手填、公开资料或来源不明的邮箱缓存不能用于提交，必须重新从邮箱接口初始化。它独立于源码与安装目录，升级、重装和打包不会带走或覆盖个人身份。Token 由 gh 的认证存储管理，不复制到该文件。
+
+后续远程写入与提交前分别执行：
+
+~~~bash
+python3 scripts/github_identity.py show --verify
+python3 scripts/github_identity.py apply --repo /absolute/path/to/repository
+~~~
+
+`show --verify` 与 `apply` 都重新核对当前账号及其已验证主邮箱。`apply` 只设置目标仓库的 Git 配置，并检查环境变量覆盖后的 author、committer。账号或主邮箱与缓存不符时停止；仅在用户明确要求换号后，重新网页授权并用 `setup --replace-account` 保存新身份。主邮箱改变时重新运行 `setup` 从接口刷新；不修改其他仓库或全局 Git 配置。
 
 ## 扫描与离线分析
 

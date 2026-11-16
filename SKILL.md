@@ -13,6 +13,12 @@ description: 审计和经营个人 GitHub 仓库组合：扫描风险与开发�
 
 对用户说明能力、结论、证据、差异与待决定事项。具体实现由 Agent 处理；“交给 Agent”不扩大私有访问和远程写入授权。
 
+## 授权与本地身份
+
+- 首次完成含 `user:email` 权限的网页授权后，立即按 [身份初始化](docs/usage.md#身份初始化与复用) 保存 API 返回的登录名与已验证主邮箱到用户配置目录。邮箱必须来自 GitHub，不接受手动指定或猜测；无法核验时重新授权。个人信息不写入本 Skill、示例配置或分发包；Token 继续由 gh 管理。
+- 后续任务先读取本地身份；远程写入前运行 `scripts/github_identity.py show --verify` 核对当前账号。已保存的姓名与邮箱直接复用，账号不符时停止写入，不自动覆盖配置或换号。
+- 创建本地提交前运行 `scripts/github_identity.py apply --repo 目标仓库`，设置仓库级姓名与邮箱，并核验实际 author、committer；不修改全局 Git 配置。API 创建普通提交也使用保存的提交身份，写后读取远程提交核验。
+
 ## 工作边界
 
 - 默认公开、非 Fork、未归档。include/exclude 和数量上限对在线采集、离线分析、Profile 一视同仁。Profile 不得绕过排除规则。
@@ -26,7 +32,7 @@ description: 审计和经营个人 GitHub 仓库组合：扫描风险与开发�
 先定位本 Skill 的实际安装目录，下面命令中的 scripts 路径均相对于该目录；不要假定用户当前目录就是 Skill 目录。
 
 1. 检查 gh、jq、python3 和 gh auth status。不得输出 Token。
-2. 用户没有指定 owner 时使用当前登录用户。已有 include/exclude 不擅自重置。私有扫描需用户明确要求，且 owner 与当前账号匹配。
+2. 用户没有指定 owner 时使用已核验的登录用户。首次授权后完成身份初始化，后续复用本地配置。已有 include/exclude 不擅自重置。私有扫描需用户明确要求，且 owner 与当前账号匹配。
 3. 运行 collect/scan。每页最多 100 条，默认最多 5 页、100 个仓库；报告说明上限导致的缺口。命中限流后停止后续联网请求。
 
 ~~~bash
