@@ -42,6 +42,6 @@
 
 ![Github Gardener 工作流程：提出目标、Agent 查证与编排、审阅授权、提交与核验](docs/assets/gardener-workflow.png)
 
-[Agent 执行指引](docs/usage.md) · [Skill 入口](SKILL.md) · [设计说明](docs/design.md) · [参与开发](CONTRIBUTING.md)
+[Agent 执行指引](docs/usage.md) · [Skill 入口](SKILL.md) · [设计说明](docs/design.md) · [分享素材](docs/share/README.md) · [参与开发](CONTRIBUTING.md)
 
 [MIT](LICENSE) © yayapao
