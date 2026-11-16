@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Install a self-contained skill, keeping upgrades recoverable."""
 import argparse
-import os
 from pathlib import Path
 import shutil
 import tempfile
 from skill_files import skill_files
+from gardener_paths import default_skill_path
 
 
 def install(source, target, force=False):
@@ -53,9 +53,8 @@ def main():
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     source = Path(__file__).resolve().parents[1]
-    codex_root = Path(os.environ.get("CODEX_HOME") or (Path.home() / ".codex"))
-    target = Path(args.destination) if args.destination else codex_root / "skills" / "github-gardener"
     try:
+        target = Path(args.destination) if args.destination else default_skill_path()
         result = install(source, target, args.force)
         print("Installed: " + result["installed"])
         if result["backup"]:

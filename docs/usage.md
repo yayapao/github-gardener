@@ -13,7 +13,7 @@
    bash scripts/install.sh
    ~~~
 
-   默认安装到 `${CODEX_HOME:-~/.codex}/skills/github-gardener`。可用 `--destination /absolute/path/skills/github-gardener` 指定宿主的实际 Skill 目录，不假定所有 Agent 都使用 Codex 路径。
+   Codex 默认安装到当前用户的 `${CODEX_HOME:-~/.codex}/skills/github-gardener`；`CODEX_HOME` 必须为绝对路径。其他宿主使用 `--destination` 指定其实际 Skill 目录，不假定所有 Agent 都使用 Codex 路径。源目录和目标路径可以包含空格；脚本按自身位置定位资源，不依赖当前工作目录。
 
 3. 已有同名 Skill 时先核对来源与版本。更新本仓库安装副本时，获取最新源码后执行 `bash scripts/install.sh --force`；旧版本备份到 Codex 根目录下的 `skill-backups/`。保留无关来源的同名内容，不盲目覆盖。
 4. 核验实际安装目录中的 `SKILL.md`、脚本、参考文件及其引用，确认依赖命令可用。宿主需要新会话才能发现 Skill 时告知用户；文件安装完成不等于当前会话已加载。
@@ -36,7 +36,9 @@ python3 scripts/github_identity.py setup --expected-login YOUR_LOGIN
 
 旧授权缺少读取邮箱权限时，执行 `gh auth refresh --hostname github.com --scopes user:email`，由用户完成网页授权后重试。接口仍未返回已验证主邮箱时，请用户在 GitHub 账号设置中确认并验证邮箱；不回退为手填，不静默请求整个 `user` 权限。
 
-配置保存在 `${XDG_CONFIG_HOME:-~/.config}/github-gardener/identity.json`，保存账号 ID、登录名、提交姓名、邮箱及来源 `git_email_source=github_verified_primary`，文件权限为 0600。旧的手填、公开资料或来源不明的邮箱缓存不能用于提交，必须重新从邮箱接口初始化。它独立于源码与安装目录，升级、重装和打包不会带走或覆盖个人身份。Token 由 gh 的认证存储管理，不复制到该文件。
+配置目录在运行时按当前操作系统用户解析，依次使用：有效的绝对路径 `XDG_CONFIG_HOME`；Windows 的绝对路径 `APPDATA`；当前用户主目录下的 `.config`。相对的 `XDG_CONFIG_HOME` 按 XDG 规范忽略。最终文件为该目录下的 `github-gardener/identity.json`，用 `python3 scripts/github_identity.py path` 可在未授权时查看实际位置。不同用户不共享身份；切换配置目录不会自动搬移旧配置，需要重新初始化。
+
+配置保存账号 ID、登录名、提交姓名、邮箱及来源 `git_email_source=github_verified_primary`，在支持 POSIX 权限的系统中文件权限为 0600。旧的手填、公开资料或来源不明的邮箱缓存不能用于提交，必须重新从邮箱接口初始化。它独立于源码与安装目录，升级、重装和打包不会带走或覆盖个人身份。Token 由 gh 的认证存储管理，不复制到该文件。
 
 后续远程写入与提交前分别执行：
 

@@ -9,10 +9,11 @@ import subprocess
 import sys
 import tempfile
 
+from gardener_paths import config_root
+
 
 def identity_path():
-    root = Path(os.environ.get("XDG_CONFIG_HOME") or (Path.home() / ".config"))
-    return root.expanduser() / "github-gardener" / "identity.json"
+    return config_root() / "github-gardener" / "identity.json"
 
 
 def run(*args):
@@ -135,6 +136,7 @@ def apply_identity(repo):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("path", help="Show the current user's identity path without authentication")
     setup = commands.add_parser("setup", help="Save identity after successful gh authorization")
     setup.add_argument("--expected-login", help="Require this GitHub account before saving")
     setup.add_argument("--replace-account", action="store_true", help="Use only after an authorized account change")
@@ -144,6 +146,9 @@ def main():
     apply.add_argument("--repo", required=True)
     args = parser.parse_args()
     try:
+        if args.command == "path":
+            print(identity_path())
+            return 0
         if args.command == "setup":
             identity = setup_identity(args.expected_login, args.replace_account)
         elif args.command == "apply":
