@@ -1,5 +1,7 @@
 # Github Gardener
 
+简体中文 | [English](README.en.md)
+
 你的 GitHub 项目花园管家，一个交给 Agent 使用的 Skill。
 
 告诉 Agent 你想整理什么：它会扫描仓库、分析风险与开发价值、改进项目介绍、设计个人主页，并准备可审阅的修改。安装、配置和具体操作都由 Agent 处理。

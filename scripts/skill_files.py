@@ -1,7 +1,7 @@
 """Select the same self-contained payload for local installation and packaging."""
 from pathlib import Path
 
-ROOT_FILES = ("SKILL.md", "README.md", "CONTRIBUTING.md", "config.example.json", "LICENSE")
+ROOT_FILES = ("SKILL.md", "README.md", "README.en.md", "CONTRIBUTING.md", "config.example.json", "LICENSE")
 RESOURCE_DIRS = ("agents", "references", "scripts", "docs")
 
 
